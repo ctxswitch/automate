@@ -10,6 +10,9 @@ export enum NodeActionTypes {
   GET                         = 'NODES::GET',
   GET_SUCCESS                 = 'NODES::GET::SUCCESS',
   GET_FAILURE                 = 'NODES::GET::FAILURE',
+  UPDATE                      = 'NODES::UPDATE',
+  UPDATE_SUCCESS              = 'NODES::UPDATE::SUCCESS',
+  UPDATE_FAILURE              = 'NODES::UPDATE::FAILURE',
   UPDATE_ENVIRONMENT          = 'NODES::ENVIRONMENT::UPDATE',
   UPDATE_ENVIRONMENT_SUCCESS  = 'NODES::ENVIRONMENT::UPDATE::SUCCESS',
   UPDATE_ENVIRONMENT_FAILURE  = 'NODES::ENVIRONMENT::UPDATE::FAILURE',
@@ -18,7 +21,10 @@ export enum NodeActionTypes {
   UPDATE_TAGS_FAILURE         = 'NODES::TAGS::UPDATE::FAILURE',
   DELETE                      = 'NODES::DELETE',
   DELETE_SUCCESS              = 'NODES::DELETE::SUCCESS',
-  DELETE_FAILURE              = 'NODES::DELETE::FAILURE'
+  DELETE_FAILURE              = 'NODES::DELETE::FAILURE',
+  UPDATE_ATTRIBUTES           = 'NODES::ATTRIBUTES::UPDATE',
+  UPDATE_ATTRIBUTES_SUCCESS   = 'NODES::ATTRIBUTES::UPDATE::SUCCESS',
+  UPDATE_ATTRIBUTES_FAILURE   = 'NODES::ATTRIBUTES::UPDATE::FAILURE'
 }
 
 export interface NodesSuccessPayload {
@@ -47,6 +53,13 @@ export interface UpdateNodeTagPayload {
   name: string;
   action: string;
   tags: string[];
+}
+
+export interface UpdateNodeAttrPayload {
+  server_id: string;
+  org_id: string;
+  name: string;
+  attributes: string[];
 }
 
 export class GetNodes implements Action {
@@ -92,6 +105,21 @@ export class DeleteNodeFailure implements Action {
   constructor(public payload: HttpErrorResponse) { }
 }
 
+export class UpdateNode implements Action {
+  readonly type = NodeActionTypes.UPDATE;
+  constructor(public payload: InfraNode ) { }
+}
+
+export class UpdateNodeSuccess implements Action {
+  readonly type = NodeActionTypes.UPDATE_SUCCESS;
+  constructor(public payload: InfraNode) { }
+}
+
+export class UpdateNodeFailure implements Action {
+  readonly type = NodeActionTypes.UPDATE_FAILURE;
+  constructor(public payload: HttpErrorResponse) { }
+}
+
 export class UpdateNodeEnvironment implements Action {
   readonly type = NodeActionTypes.UPDATE_ENVIRONMENT;
   constructor(public payload: { node:  UpdateNodeEnvPayload}) { }
@@ -122,6 +150,21 @@ export class UpdateNodeTagsFailure implements Action {
   constructor(public payload: HttpErrorResponse) { }
 }
 
+export class UpdateNodeAttributes implements Action {
+  readonly type = NodeActionTypes.UPDATE_ATTRIBUTES;
+  constructor(public payload: UpdateNodeAttrPayload ) { }
+}
+
+export class UpdateNodeAttributesSuccess implements Action {
+  readonly type = NodeActionTypes.UPDATE_ATTRIBUTES_SUCCESS;
+  constructor(public payload: {attributes: string[]}) { }
+}
+
+export class UpdateNodeAttributesFailure implements Action {
+  readonly type = NodeActionTypes.UPDATE_ATTRIBUTES_FAILURE;
+  constructor(public payload: HttpErrorResponse) { }
+}
+
 export type NodeActions =
   | GetNodes
   | GetNodesSuccess
@@ -132,9 +175,15 @@ export type NodeActions =
   | DeleteNode
   | DeleteNodeSuccess
   | DeleteNodeFailure
+  | UpdateNode
+  | UpdateNodeSuccess
+  | UpdateNodeFailure
   | UpdateNodeEnvironment
   | UpdateNodeEnvironmentSuccess
   | UpdateNodeEnvironmentFailure
   | UpdateNodeTags
   | UpdateNodeTagsSuccess
-  | UpdateNodeTagsFailure;
+  | UpdateNodeTagsFailure
+  | UpdateNodeAttributes
+  | UpdateNodeAttributesSuccess
+  | UpdateNodeAttributesFailure;

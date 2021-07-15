@@ -196,7 +196,6 @@ chef-loading-spinner {
   font-weight: 700;
   padding: 5px 8px;
   height: 28px;
-  text-transform: capitalize;
   cursor: pointer;
 }
 
@@ -266,6 +265,15 @@ div#button-env {
   height: 220px;
 }
 
+.json-tree-container {
+  font-size: 14px;
+}
+
+.edit-item {
+  margin: 0 8px 0 -4px;
+  font-size: 13px;
+}
+
 // ng-select 
 ::ng-deep {
   .ng-select .ng-select-container {
@@ -308,5 +316,147 @@ div#button-env {
     right: 5px;
     top: 0px;
     transform: rotate(225deg);
+  }
+}
+
+// run list
+.runlist {
+
+  .empty-section {
+    margin-top: 130px;
+    text-align: center;
+  }
+
+  img {
+    width: 70px;
+  }
+
+  .attr {
+    width: 98%;
+    margin-left: 28px;
+    margin-right: 33px;
+    margin-top: 16px;
+    background: $chef-white;
+    border: 1px solid $chef-key-tab;
+    box-sizing: border-box;
+    border-radius: 2px;
+    padding-bottom: 16px;
+  }
+
+  .expand-collapse {
+    margin: 0 10px;
+    width: 98%;
+    border-bottom: 0.5px solid $chef-key-tab;
+    font-size: 14px;
+    color: $royal-blue;
+
+    .action {
+      cursor: pointer;
+    }
+  }
+
+  .float-right {
+    position: relative;
+    float: right;
+
+    &:hover {
+      background: $chef-light-grey;
+      border-radius: 4px;
+    }
+
+    &:focus {
+      border: solid 1px $chef-primary-bright;
+    }
+  }
+
+  .label {
+    margin-left: 39px;
+    height: 20px;
+    left: 200px;
+    top: 238px;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    color: $chef-black;
+  }
+
+  .default {
+    margin-top: 29px;
+    max-width: 25%;
+  }
+
+  .label-items {
+    margin-bottom: 16px;
+    height: 55px;
+  }
+
+  .version-dropdown {
+    float: right;
+    width: 279px;
+  }
+
+  ::ng-deep {
+    .label-items .label {
+      float: left;
+    }
+  }
+}
+
+
+//Attributes tab
+.attributes {
+
+  .attr {
+    width: 100%;
+    height: 242px;
+    background: $chef-white;
+    border: 1px solid $chef-key-tab;
+    border-radius: 2px;
+  }
+
+  .divider-constraints {
+    margin-left: 16px;
+    margin-top: 2px;
+    margin-right: 18px;
+  }
+
+  .json-container {
+    height: 169px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    color: $chef-black;
+  }
+
+  .scroll {
+    max-height: 158px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  ::ng-deep .scroll::-webkit-scrollbar {
+    width: 5px;
+    background-color: $chef-modal-scrollbar;
+  }
+
+  ::ng-deep .scroll::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: $chef-modal;
+  }
+
+  .img-section {
+    text-align: center;
+  }
+
+  img {
+    margin-top: 30px;
+    width: 70px;
+  }
+
+  .right-button-box {
+    cursor: pointer;
+    position: relative;
+    float: right;
   }
 }

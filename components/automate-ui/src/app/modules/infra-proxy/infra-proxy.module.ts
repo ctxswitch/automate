@@ -23,7 +23,9 @@ import { DataBagsListComponent } from './data-bags-list/data-bags-list.component
 import { DeleteInfraObjectModalComponent } from './delete-infra-object-modal/delete-infra-object-modal.component';
 import { EditDataBagItemModalComponent } from './edit-data-bag-item-modal/edit-data-bag-item-modal.component';
 import { EditEnvironmentAttributeModalComponent } from './edit-environment-attribute-modal/edit-environment-attribute-modal.component';
+import { EditInfraNodeModalComponent } from './edit-infra-node-modal/edit-infra-node-modal.component';
 import { EditInfraRoleModalComponent } from './edit-infra-role-modal/edit-infra-role-modal.component';
+import { EditInfraNodeAttributeModalComponent } from './edit-infra-node-attribute-modal/edit-infra-node-attribute-modal.component';
 import { EmptyStateComponent } from './empty-state/empty-state.component';
 import { EnvironmentsComponent } from './environments/environments.component';
 import { EnvironmentDetailsComponent } from './environment-details/environment-details.component';
@@ -38,9 +40,12 @@ import { InfraTabChangeComponent } from './infra-tab-change/infra-tab-change.com
 import { JsonTreeTableComponent } from './json-tree-table/json-tree-table.component';
 import { OrgDetailsComponent } from './org-details/org-details.component';
 import { OrgEditComponent } from './org-edit/org-edit.component';
+import { PaginationComponent } from './pagination/components/pagination.component';
 import { PolicyFilesComponent } from './policy-files/policy-files.component';
 import { ResetAdminKeyComponent } from './reset-admin-key/reset-admin-key.component';
 import { ResetClientKeyComponent } from './reset-client-key/reset-client-key.component';
+import { ResetNodeKeyComponent } from './reset-node-key/reset-node-key.component';
+import { UpdateNodeTagModalComponent } from './update-node-tag-modal/update-node-tag-modal.component';
 import { TreeTableModule } from './tree-table/tree-table.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
@@ -69,7 +74,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     DeleteInfraObjectModalComponent,
     EditDataBagItemModalComponent,
     EditEnvironmentAttributeModalComponent,
+    EditInfraNodeModalComponent,
     EditInfraRoleModalComponent,
+    EditInfraNodeAttributeModalComponent,
     EmptyStateComponent,
     EnvironmentsComponent,
     EnvironmentDetailsComponent,
@@ -84,9 +91,12 @@ import { NgSelectModule } from '@ng-select/ng-select';
     InfraTabChangeComponent,
     OrgDetailsComponent,
     OrgEditComponent,
+    PaginationComponent,
     PolicyFilesComponent,
     ResetAdminKeyComponent,
-    ResetClientKeyComponent
+    ResetClientKeyComponent,
+    ResetNodeKeyComponent,
+    UpdateNodeTagModalComponent
   ],
   imports: [
     CommonModule,

@@ -32,6 +32,8 @@ The objects that you can manage from the Chef Infra Server are:
 - Environments
 - Data Bags
 - Clients
+- Nodes
+- Policyfiles
 
 ## Connect Chef Infra Servers to Chef Automate
 
@@ -81,15 +83,51 @@ To access these components for an organization, select **Chef Servers > Organiza
 
 A [cookbook]({{< relref "cookbooks" >}}) is the fundamental unit of configuration and policy distribution. A cookbook contains recipes and other files, components, or directories.
 
+The Chef Infra Server lets you view:
+
+- List of cookbooks with their latest version
+- Different versions of a cookbook
+- Contents of a cookbook
+- Details of a cookbook
+
+#### List of Cookbooks
+
+In Chef Infra Server, you can view all the cookbooks of an organization. The latest version of the cookbooks are mentioned in the list.
+
+{{< figure src="/images/automate/list-of-cookbooks.png" alt="List of Cookbooks">}}
+
+Select a cookbook from the list to view the details of that cookbook.
+
+#### Different Versions of Cookbooks
+
+To view different versions of a cookbook:
+
+- Select a cookbook from the list.
+- View the different versions of the cookbook using the dropdown list.
+
+{{< figure src="/images/automate/view-different-versions-of-cookbook.png" alt="Versions of a Cookbook">}}
+
+#### Cookbook Content
+
+Select the **Content** tab to view the recipes and other components of a cookbook. This view also contains the files or directories of the components. To view the cookbook content, select the file from the component list.
+
+{{< figure src="/images/automate/contents-of-a-cookbook.png" alt="Cookbook Contents">}}
+
+#### Details of a Cookbook
+
+Select the **Details** tab to view the requirements, usage, resources, and license of a cookbook.
+
+{{< figure src="/images/automate/details-of-a-cookbook.png" alt="Details of a Cookbook">}}
+
 ### Roles
 
 [Roles]({{< relref "roles" >}}) let you define patterns and processes that exist across nodes in an organization as belonging to a single job function. Each role consists of zero (or more) attributes and a run-list.
 
-The Chef Infra Server UI lets you:
+The Chef Infra Server lets you:
 
 - Create a role
-- List out all the roles at one place.
-- Search for a specific role from a list of roles.
+- View all roles
+- Search for a specific role
 - View the details of roles:
   - Run List
   - Attributes
@@ -125,7 +163,7 @@ You can edit the *default* and *override* attributes by selecting the **Edit** o
 
 #### Delete a Role
 
-Chef Infra Server lets you delete the existing roles one at a time. To delete a role, select the ellipses icon and then **Delete**, as illustrated below:
+Chef Infra Server lets you delete the existing roles one at a time. To delete a role, select the ellipses icon {{< fontawesome class="fas fa-ellipsis-h" >}} and then **Delete**, as illustrated below:
 
 {{< figure src="/images/automate/delete-a-role.png" alt="Delete A Role">}}
 
@@ -135,12 +173,12 @@ An [environment]({{< relref "environments" >}}) can be used to map an organizati
 
 The Chef Infra Server UI lets you:
 
-- Create an environment.
-- Search for a specific environment from a list of environments.
-- List out all the environments at one place.
-- View the details of an environment.
-- Edit an environment.
-- Delete an environment.
+- Create an environment
+- View all environments
+- Search for a specific environment
+- View the details of an environment
+- Edit an environment
+- Delete an environment
 
 #### Create an Environment
 
@@ -190,13 +228,13 @@ The Chef Infra Server lets you delete environments one at a time. Select **Delet
 
 Chef Infra Server UI lets you:
 
-- Create a data bag.
-- List out all the data bags in one place.
-- Search for a specific data bag item from a list of items.
-- Create a data bag item.
-- Edit a data bag item.
-- Delete a data bag item.
-- Delete a data bag.
+- Create a data bag
+- View all data bags
+- Search for a specific data bag item
+- Create a data bag item
+- Edit a data bag item
+- Delete a data bag item
+- Delete a data bag
 
 #### Create a Data Bag
 
@@ -256,11 +294,11 @@ Chef Infra Server lets you delete the existing data bag one at a time. To delete
 
 Chef Infra Clients provide secure API access to the Chef Infra Server. Chef Infra Server UI lets you:
 
-- Create a client.
-- Search for a specific client from a list of clients.
-- List out all the clients at one place.
-- Reset a client key.
-- Delete a client.
+- Create a client
+- View all clients
+- Search for a specific client
+- Reset a client key
+- Delete a client
 
 #### Create a Client
 
@@ -291,7 +329,7 @@ Select the client to view the _Public Key_ for that client. The _Public Key_ of 
 
 The Chef Infra Server lets you reset the _Public Key_ using the _Reset Key_ option. Selecting the _Reset Key_ option opens an alert stating _The current key will no longer be accepted._
 
-{{< figure src="/images/automate/reset-key-in-client-details.png" alt="Reset Key option of a Client" width="400" height="300">}}
+{{< figure src="/images/automate/reset-key-in-client-details.png" alt="Reset Key Option of a Client" width="400" height="300">}}
 
 Selecting the _Reset Key_ shown in the above image opens a new dialog box which contains the new _Private Key_ of that client. To download the new _Private Key_, select **Download**.
 
@@ -299,7 +337,7 @@ Selecting the _Reset Key_ shown in the above image opens a new dialog box which 
 
 #### Delete a Client
 
-Chef Infra Server lets you delete the existing clients one at a time. To delete a client, select the ellipses icon and then **Delete**, as illustrated below:
+Chef Infra Server lets you delete the existing clients one at a time. To delete a client, select the ellipses icon {{< fontawesome class="fas fa-ellipsis-h" >}} and then **Delete**, as illustrated below:
 
 {{< figure src="/images/automate/delete-a-client.png" alt="Delete a Client">}}
 
@@ -309,8 +347,13 @@ A [node]({{< relref "/nodes" >}}) is a device that is managed by Chef Infra. Dur
 
 The Chef Infra Server integration lets you:
 
-- Search for a specific node from a list of nodes.
-- View a list of all the connected nodes.
+- Search for a specific node
+- View all nodes
+- Details of a node
+- Edit Run list
+- Edit Attributes
+- Manage tags
+- Reset a node key
 - Delete a node
 
 #### Search for a Node
@@ -319,11 +362,101 @@ Use the search bar on the Nodes tab (**Chef Infra Servers > Nodes**)  to find a 
 
 {{< figure src="/images/automate/search-a-node.png" alt="Search a Node">}}
 
+#### Details of a Node
+
+Select a specific node to view the node information, metadata and details of the environment of the node. The first section of the page has the **Node Information** like `Environment`, `Policy Group` and `Policy Name`. You can also view the **Metadata** for the node which contains the name of the `Chef Server`, and name of the `Chef Organization`.
+
+The above information looks like as shown below:
+
+{{< figure src="/images/automate/node-information-metadata.png" alt="Node Information & Metadata">}}
+
+The next section of the page contains two options:
+
+- Details
+- Run List
+- Attributes
+
+##### Details
+
+The **Details** section lets you view and update the node environment. The drop-down menu consists of the list of environments created in the chef server. You can select any one environment for the selected node.
+
+To select the environment:
+
+- Click on the dropdown menu and select the name of the environment.
+
+- You can add tags to the environment from the text bar below the dropdown menu.
+**Note:** To add multiple tags at a time, use comma separator. Example: Tag1, Tag2, Tag3.
+
+- Selecting an environment will open a popup to save the node environment. Select **Save** to change the node environment.
+
+{{< figure src="/images/automate/update-node-environment.png" alt="Update Node Environment">}}
+
+##### Run List
+
+You can edit, expand or collapse a node's run list.
+
+{{< figure src="/images/automate/run-list-of-a-node.png" alt="Run List of a Node">}}
+
+Edit a run list by:
+
+1. Select **edit**. A popup window opens.
+
+2. The left side of the window contains the list of environments. Select an environment from the list.
+
+3. The right side of the window will show the run list for the selected environment.
+
+4. Select the run list for a specific environment.
+
+5. Select **Create**.
+
+This opens a pop-up window similar to:
+
+{{< figure src="/images/automate/edit-run-list.png" alt="Edit Run List">}}
+
+You can find the editing window directly by selecting the ellipses icon {{< fontawesome class="fas fa-ellipsis-h" >}} and then **Edit Run List**  of a specific node in the node list. Selecting the option opens a pop-up for editing the run list.
+
+##### Attributes
+
+The attributes window shows all the default and overridden [attributes]({{< relref "attributes" >}}). Select **Expand All** or **Collapse All** to view or hide the attributes. Select **Edit** to change or update the existing attributes.
+
+{{< figure src="/images/automate/node-attributes-list.png" alt="Node Attributes List">}}
+
+You can find the editing window directly by selecting the ellipses icon {{< fontawesome class="fas fa-ellipsis-h" >}} and then **Edit Attributes**  of a specific node in the node list. Selecting the option opens a pop-up for editing the attributes.
+
+#### Manage Tags
+
+Chef Infra allows you to manage tags of the environment. You can add or remove multiple tags in two ways:
+
+1. Selecting the node and add the tags from the text bar below the dropdown menu of environments.
+
+2. Select the ellipses icon {{< fontawesome class="fas fa-ellipsis-h" >}} and then **Manage Tags** for a specific node. Add and remove tags in tag editor and select **Update Tags** to save your changes.
+
+{{< figure src="/images/automate/manage-tags-from-ellipses-icon.png" alt="Manage Tags">}}
+
+#### Reset a Client Key
+
+Reset a client key by selecting the ellipses icon {{< fontawesome class="fas fa-ellipsis-h" >}} and then **Reset Key** of a specific node in the node list. Selecting **Reset Key** opens a warning that the current key will no longer be accepted. Select **Reset Key** once again to confirm.
+
+{{< figure src="/images/automate/reset-the-node-key.png" alt="Reset the Client Key">}}
+
 #### Delete a Node
 
-Delete individual existing nodes by selecting the ellipses icon and then **Delete**:
+Delete individual existing nodes by selecting the ellipses icon {{< fontawesome class="fas fa-ellipsis-h" >}} and then **Delete**:
 
 {{< figure src="/images/automate/delete-a-node.png" alt="Delete a Node">}}
+
+### Policyfiles
+
+[Policyfiles]({{< relref "/policyfile" >}}) are preferred way of managing roles, environments, and community cookbooks data with a single document that is uploaded to the Chef Infra Server. Policyfiles lets you test and promote code with simpler interface.
+
+The Chef Infra Server integration lets you:
+
+- Search for a specific policyfiles
+- View all the policyfiles
+
+Use the search bar on the Policyfile tab (**Chef Infra Server > Policyfile**) to find a policy file from the list. Entering the name of the policy file in the search bar returns policyfiles matching your search criteria.
+
+{{< figure src="/images/automate/policyfiles-list-and-searchbar.png" alt="Policyfile">}}
 
 ## Troubleshoot
 

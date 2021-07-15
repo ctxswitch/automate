@@ -5,7 +5,7 @@
         <chef-breadcrumb [link]="['/infrastructure/chef-servers']">Chef Infra Servers</chef-breadcrumb>
         <chef-breadcrumb [routerLink]="['/infrastructure/chef-servers', serverId]">Organizations</chef-breadcrumb>
         <chef-breadcrumb [routerLink]="['/infrastructure/chef-servers', serverId, 'organizations', orgId]">Nodes</chef-breadcrumb>
-         {{InfraNode?.name}}
+          {{InfraNode?.name}}
       </chef-breadcrumbs>
       <chef-page-header>
         <chef-heading data-cy="infra-node-head">{{InfraNode?.name}}</chef-heading>
@@ -14,7 +14,7 @@
             <table>
               <tr>
                 <th>
-                  <p class="meta-head">NODE INFROMATION</p>
+                  <p class="meta-head">NODE INFORMATION</p>
                 </th>
               </tr>
               <tr>
@@ -61,10 +61,33 @@
             </table>
           </div>
         </div>
-        <chef-tab-selector [value]="tabValue">
-          <chef-option value='runList' data-cy="details-tab">Details</chef-option>
+        <chef-tab-selector [value]="tabValue" (change)="onSelectedTab($event)">
+          <chef-option value='details' data-cy="details-tab">Details</chef-option>
+          <chef-option value='runList' data-cy="run-list-tab">Run list</chef-option>
+          <chef-option value='attributes' data-cy="attributes-tab">Attributes</chef-option>
         </chef-tab-selector>
       </chef-page-header>
+
+      <app-edit-infra-node-modal
+        [label]="label"
+        [openEvent]="openEnvironmentModal"
+        [orgId]="orgId"
+        [availableType]="availableType"
+        [node]="InfraNode"
+        [serverId]="serverId"
+        [selected]="selected"
+        [runlistError]="conflictError"
+        (runlistUpdated)="updateRunlist()">
+      </app-edit-infra-node-modal>
+
+      <app-edit-infra-node-attribute-modal 
+        [jsonText]="jsonText"
+        [openEvent]="openAttributeModal"
+        [orgId]="orgId" [node]="InfraNode"
+        [serverId]="serverId"
+        [attrParseError]="conflictError">
+      </app-edit-infra-node-attribute-modal>
+
       <section class="page-body" *ngIf="tabValue === 'details'">
         <chef-loading-spinner class="top-spinner" *ngIf="nodeDetailsLoading" size="50"></chef-loading-spinner>
         <div class="details-tab" *ngIf="!nodeDetailsLoading">
@@ -119,7 +142,7 @@
               </form>
               <span class="label">Tags</span>
               <div class="node-tags-box">
-                <input 
+                <input
                   chefInput
                   type="text"
                   id="tag-input"
@@ -141,10 +164,151 @@
                 class="display-node-tags"
                 [ngClass]="saving ? 'disable' : ''"
                 data-cy="tag-box">
-                <span *ngFor="let tag of nodeTags" class="tag">
-                  {{tag}}
-                  <a class="removeTag" (click)="removeTag(tag)" data-cy="remove-tag"></a>
-                </span>
+              <span *ngFor="let tag of nodeTags" class="tag">
+                {{tag}}
+                <a class="removeTag" (click)="removeTag(tag)" data-cy="remove-tag"></a>
+              </span>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </section>
+      <section class="page-body runlist" *ngIf="tabValue === 'runList'">
+        <chef-loading-spinner class="top-spinner" *ngIf="nodeRunlistLoading" size="50"></chef-loading-spinner>
+        <div class="details-tab" *ngIf="!nodeRunlistLoading">
+          <div class="spinner">
+            <chef-loading-spinner *ngIf="nodeRunlistLoading" size="50" fixed></chef-loading-spinner>
+            <chef-loading-spinner *ngIf="runListLoading" size="50" fixed></chef-loading-spinner>
+          </div>
+          <div *ngIf="!nodeRunlistLoading">
+            <div class="label-items" *ngIf="!runListLoading">
+              <label>
+                <span class="label default">Run List</span>
+              </label>
+            </div>
+            <div class="attr" *ngIf="!runListLoading">
+              <div class="expand-collapse" *ngIf="!hasRun_List">
+                <chef-button
+                  tertiary
+                  class="action"
+                  (click)="''"
+                  [disabled]="true"
+                  data-cy="empty-expand-runlist">
+                  <chef-icon>add_circle</chef-icon>
+                  <span>Expand All</span>
+                </chef-button>
+                <chef-button
+                  tertiary
+                  class="action"
+                  (click)="''"
+                  [disabled]="true"
+                  data-cy="empty-collapse-runlist">
+                  <chef-icon>remove_circle</chef-icon>
+                  <span>Collapse All</span>
+                </chef-button>
+                <chef-button
+                  tertiary
+                  class="float-right action"
+                  (click)="openEditModal('Run List')"
+                  [disabled]="runListLoading || conflictError"
+                  data-cy="node-edit-runlist">
+                  <span class="material-icons edit-item">mode_edit</span>
+                  <span class="edit-text">Edit</span>
+                </chef-button>
+              </div>
+              <div *ngIf="hasRun_List">
+                <div class="expand-collapse">
+                  <chef-button
+                    tertiary
+                    class="action"
+                    (click)="trees ? trees.expand() : ''"
+                    data-cy="node-expand-runlist">
+                    <chef-icon>add_circle</chef-icon>
+                    <span>Expand All</span>
+                  </chef-button>
+                  <chef-button
+                    tertiary
+                    class="action"
+                    (click)="trees ? trees.treeCollapsed() : ''"
+                    data-cy="node-collapse-runlist">
+                    <chef-icon>remove_circle</chef-icon>
+                    <span>Collapse All</span>
+                  </chef-button>
+                  <chef-button
+                    tertiary
+                    class="float-right action"
+                    (click)="openEditModal('Run List')"
+                    data-cy="node-edit-runlist">
+                    <span class="material-icons edit-item">mode_edit</span>
+                    <span class="edit-text">Edit</span>
+                  </chef-button>
+                </div>
+                <app-tree-table
+                  [hidden]="hasRun_List ? false : true"
+                  [tree]="arrayOfNodesTree"
+                  #trees
+                  [options]="treeOptions">
+                </app-tree-table>
+              </div>
+              <div data-cy="empty-runlist" *ngIf="!hasRun_List && !runListLoading && !conflictError" class="empty-section">
+                <img alt="No preview" src="/assets/img/no_preview.gif" />
+                <p>Run list details are not available for the environment.</p>
+              </div>
+              <div *ngIf="!hasRun_List && !runListLoading && conflictError" class="empty-section">
+                <img alt="No preview" src="/assets/img/no_preview.gif" />
+                <p>Cannot load environment - <strong> {{InfraNode?.environment}}</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="page-body attributes" *ngIf="tabValue === 'attributes'">
+        <chef-loading-spinner class="top-spinner" *ngIf="nodeDetailsLoading" size="50"></chef-loading-spinner>
+        <div class="attributes-tab" *ngIf="!nodeAttributesLoading">
+          <div class="spinner">
+            <chef-loading-spinner *ngIf="nodeAttributesLoading" size="50" fixed></chef-loading-spinner>
+          </div>
+          <ng-container *ngIf="!nodeAttributesLoading">
+            <div class="node-attributes-section">
+              <label>
+                <span class="label default">Attributes</span>
+              </label>
+              <div class="attr">
+                <div class="expand-collapse">
+                  <chef-button tertiary class="action"
+                   (click)="tree.expand()" [disabled]=!hasattributes
+                    data-cy="expand-attributes">
+                    <chef-icon>add_circle</chef-icon>
+                    <span>Expand All</span>
+                  </chef-button>
+                  <chef-button tertiary class="action"
+                   (click)="tree.collapse()" [disabled]=!hasattributes
+                    data-cy="collapse-attributes">
+                    <chef-icon>remove_circle</chef-icon>
+                    <span>Collapse All</span>
+                  </chef-button>
+                  <chef-button tertiary class="right-button-box" 
+                    [disabled]="conflictError"
+                    (click)="openEditAttrModal(InfraNode.normal_attributes)"
+                    data-cy="node-edit-attributes">
+                    <span class="material-icons edit-item">mode_edit</span>
+                    <span class="edit-text">Edit</span>
+                  </chef-button>
+                </div>
+                <hr class="divider-constraints" />
+                <div class="json-container">
+                  <div class="scroll">
+                    <app-json-tree-table class="json-tree-container" 
+                    [hidden]="hasattributes? false : true" 
+                    #tree
+                    [json]="attributes">
+                    </app-json-tree-table>
+                    <div *ngIf="!hasattributes" class="img-section">
+                      <img alt="No preview" src="/assets/img/no_preview.gif" />
+                      <p>There are no items for Display.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </ng-container>

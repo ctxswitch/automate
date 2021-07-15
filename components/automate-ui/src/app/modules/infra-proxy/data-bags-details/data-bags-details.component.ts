@@ -48,6 +48,7 @@ export class DataBagsDetailsComponent implements OnInit, OnDestroy {
   public total: number;
   public dataBagItemToDelete: DataBagItems;
   public deleteModalVisible = false;
+  public deleting = false;
   public openDataBagModal = new EventEmitter<void>();
   public openEditDataBagItemModal = new EventEmitter<void>();
   public openDataBagItemModal = new EventEmitter<void>();
@@ -88,6 +89,7 @@ export class DataBagsDetailsComponent implements OnInit, OnDestroy {
         this.appendActiveToItems(this.dataBagItems);
         this.dataBagsDetailsLoading = false;
         this.searching = false;
+        this.deleting = false;
       });
 
     this.store.select(deleteStatus).pipe(
@@ -114,6 +116,7 @@ export class DataBagsDetailsComponent implements OnInit, OnDestroy {
       takeUntil(this.isDestroyed))
       .subscribe(([_getDataBagItemDetailsSt, dataBagItemDetailsState]) => {
         this.selectedItemDetails = JSON.parse(dataBagItemDetailsState.data);
+        delete this.selectedItemDetails['id'];
         this.dataBagsItemDetailsLoading = false;
       });
   }
@@ -204,6 +207,7 @@ export class DataBagsDetailsComponent implements OnInit, OnDestroy {
 
   public closeDeleteModal(): void {
     this.deleteModalVisible = false;
+    this.deleting = true;
   }
 
   public openCreateModal(): void {
@@ -212,6 +216,7 @@ export class DataBagsDetailsComponent implements OnInit, OnDestroy {
 
   public startUpdateDataBagItem(item: DataBagItems, jsonData: Object): void {
     this.dataBagItemName = item.name;
+    delete jsonData['id'];
     this.itemDataJson = JSON.stringify(jsonData, null, 4);
     this.openEditDataBagItemModal.emit();
   }
